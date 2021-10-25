@@ -77,6 +77,27 @@ public class Profile {
     }
     
     /**
+     * Function for getting string of profile special data
+     * @return String
+     */
+    String data_string(){
+        String data = "";
+        for(String object : profile_special_data){
+            data = data + object+"#";
+        }
+        data = data.substring(0, data.length()-1);
+        return data;
+    }
+    
+    /**
+     * Function for creating profile string for file
+     * @return String
+     */
+    public String profile_string(){
+        return profile_name+"!"+profile_url+"!"+profile_health_connection_url+"!"+data_string();
+    }
+    
+    /**
      * Function for showing object internal data
      */
     public void show(){

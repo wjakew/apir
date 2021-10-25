@@ -19,11 +19,11 @@ import java.util.ArrayList;
 public class Profile_Engine {
     
     public ArrayList<Profile> list_profiles;
-    ArrayList<String> raw_lines;
-    final String PROFILES_SRC = "profiles.apir"; 
-    boolean new_file,error;
-    boolean empty;
-    Profile selected_profile;
+    public ArrayList<String> raw_lines;
+    public final String PROFILES_SRC = "profiles.apir"; 
+    public boolean new_file,error;
+    public boolean empty;
+    public Profile selected_profile;
     /**
      * Constructor
      */
@@ -47,16 +47,28 @@ public class Profile_Engine {
     }
     
     /**
+     * Function for dumping data to file
+     * @throws IOException 
+     */
+    void dump_data_to_file() throws IOException{
+        FileWriter file = new FileWriter(PROFILES_SRC);
+        for(Profile profile : list_profiles){
+            file.write(profile.profile_string()+"\n");
+        }
+        file.close();
+    }
+    
+    /**
      * Function for loading data from file
      */
     public void load_from_file() throws IOException{
         File file = new File(PROFILES_SRC);
         if (file.exists()){
             BufferedReader reader = new BufferedReader(new FileReader(PROFILES_SRC));
-            StringBuilder content = new StringBuilder();
             String line;
 
             while ((line = reader.readLine()) != null) {
+                System.out.println(line);
                 raw_lines.add(line);
             }
         }
@@ -68,7 +80,7 @@ public class Profile_Engine {
     /**
      * Function for parsing 
      */
-    void parse(){
+    public void parse(){
         for(String line : raw_lines){
             Profile profile = new Profile();
             try{
@@ -82,7 +94,8 @@ public class Profile_Engine {
      * Function for adding profiles to object
      * @param to_add 
      */
-    public void add_profile(Profile to_add){
+    public void add_profile(Profile to_add) throws IOException{
         list_profiles.add(to_add);
+        dump_data_to_file();
     }
 }

@@ -5,6 +5,11 @@ all rights reseved
  */
 package com.jakubwawak.ui_maintenance;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import javax.swing.JTextField;
+import javax.swing.table.TableModel;
+import utils.Profile;
 import utils.Profile_Engine;
 
 /**
@@ -16,10 +21,45 @@ public class new_profile_window extends javax.swing.JDialog {
     /**
      * Creates new form new_profile_window
      */
+    Profile_Engine profile_engine;
     public new_profile_window(javax.swing.JDialog parent, boolean modal,Profile_Engine profile_engine) {
         super(parent, modal);
+        this.profile_engine = profile_engine;
         initComponents();
+        this.setLocationRelativeTo(null);
         setVisible(true);
+    }
+    
+    
+    /**
+     * Function for getting table data
+     * @return ArrayList
+     */
+    ArrayList<String> get_table_data(){
+        ArrayList<String> data = new ArrayList<>();
+        TableModel model = table_notes.getModel();
+        data.add((String) model.getValueAt(0, 0));
+        data.add((String) model.getValueAt(0, 1));
+        data.add((String) model.getValueAt(0, 2));
+        return data;
+    }
+    
+    
+    /**
+     * Function for validate fields
+     * @param object
+     * @return boolean
+     */
+    boolean validate_field(JTextField object){
+        return !object.getText().equals("");
+    }
+    
+    /**
+     * Function for validate all compontents
+     * @return boolean
+     */
+    boolean validate_fields(){
+        return validate_field(field_name) && validate_field(field_url) && validate_field(field_endpoint);
     }
 
     /**
@@ -36,11 +76,11 @@ public class new_profile_window extends javax.swing.JDialog {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        table_notes = new javax.swing.JTable();
+        button_create = new javax.swing.JButton();
+        field_name = new javax.swing.JTextField();
+        field_url = new javax.swing.JTextField();
+        field_endpoint = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Profile creator");
@@ -53,7 +93,7 @@ public class new_profile_window extends javax.swing.JDialog {
 
         jLabel4.setText("Key words / notes");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        table_notes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null}
             },
@@ -69,14 +109,19 @@ public class new_profile_window extends javax.swing.JDialog {
                 return types [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
+        jScrollPane1.setViewportView(table_notes);
+        if (table_notes.getColumnModel().getColumnCount() > 0) {
+            table_notes.getColumnModel().getColumn(0).setResizable(false);
+            table_notes.getColumnModel().getColumn(1).setResizable(false);
+            table_notes.getColumnModel().getColumn(2).setResizable(false);
         }
 
-        jButton1.setText("Create new profile");
+        button_create.setText("Create new profile");
+        button_create.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button_createActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -86,7 +131,7 @@ public class new_profile_window extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(button_create, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
@@ -97,9 +142,9 @@ public class new_profile_window extends javax.swing.JDialog {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addGap(0, 139, Short.MAX_VALUE))
-                            .addComponent(jTextField1)
-                            .addComponent(jTextField2)
-                            .addComponent(jTextField3))))
+                            .addComponent(field_name)
+                            .addComponent(field_url)
+                            .addComponent(field_endpoint))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -108,38 +153,58 @@ public class new_profile_window extends javax.swing.JDialog {
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(field_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(field_url, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(field_endpoint, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
+                .addComponent(button_create)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void button_createActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_createActionPerformed
+        if ( validate_fields() ){
+            Profile profile = new Profile();
+            profile.profile_name = field_name.getText();
+            profile.profile_url = field_url.getText();
+            profile.profile_health_connection_url = field_endpoint.getText();
+            profile.profile_special_data = get_table_data();
+            try {
+                profile_engine.add_profile(profile);
+                new message_window(this,true,"Profile added","");
+                dispose();
+            } catch (IOException ex) {
+                new message_window(this,true,"Error\n"+ex.toString(),"ERROR");
+            }
+        }
+        else{
+            new message_window(this,true,"Failed to load fields. Check fields.","");
+        }
+    }//GEN-LAST:event_button_createActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton button_create;
+    private javax.swing.JTextField field_endpoint;
+    private javax.swing.JTextField field_name;
+    private javax.swing.JTextField field_url;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTable table_notes;
     // End of variables declaration//GEN-END:variables
 }

@@ -17,7 +17,7 @@ import utils.Profile_Engine;
 public class Apir {
     
     final static String version = "1.0.0";
-    final static String build_number = "APIR-231021REV1";
+    final static String build_number = "APIR-241021REV1";
     final static int debug = 0;
     
     
@@ -37,6 +37,7 @@ public class Apir {
             System.out.println("Starting program in normal mode.");
             Profile_Engine profile_engine = new Profile_Engine();
             profile_engine.load_from_file();
+            profile_engine.parse();
             new profile_picker_window(null,true,profile_engine);
         }
     }

@@ -4,6 +4,7 @@ kubawawak@gmail.com
 all rights reseved
  */
 package com.jakubwawak.ui_maintenance;
+import com.jakubwawak.ui.main_window;
 import javax.swing.DefaultListModel;
 import utils.Profile;
 import utils.Profile_Engine;
@@ -42,9 +43,11 @@ public class profile_picker_window extends javax.swing.JDialog {
     void load_list(){
         DefaultListModel dlm = new DefaultListModel();
         dlm.addElement("0:Empty profile");
+        int id = 1;
         if (profile_engine.list_profiles.size() > 0){
             for(Profile profile : profile_engine.list_profiles){
-                dlm.addElement(profile.profile_name);
+                dlm.addElement(id + ":"+profile.profile_name);
+                id++;
             }
         }
         list_profiles.setModel(dlm);
@@ -61,7 +64,7 @@ public class profile_picker_window extends javax.swing.JDialog {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         list_profiles = new javax.swing.JList<>();
-        jButton1 = new javax.swing.JButton();
+        button_setprofile = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         menu_profiles = new javax.swing.JMenu();
         menu_createnewprofile = new javax.swing.JMenuItem();
@@ -76,7 +79,12 @@ public class profile_picker_window extends javax.swing.JDialog {
         });
         jScrollPane1.setViewportView(list_profiles);
 
-        jButton1.setText("Set profile");
+        button_setprofile.setText("Set profile");
+        button_setprofile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button_setprofileActionPerformed(evt);
+            }
+        });
 
         menu_profiles.setText("Profiles");
 
@@ -100,7 +108,7 @@ public class profile_picker_window extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE))
+                    .addComponent(button_setprofile, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -109,7 +117,7 @@ public class profile_picker_window extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
+                .addComponent(button_setprofile)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -118,11 +126,31 @@ public class profile_picker_window extends javax.swing.JDialog {
 
     private void menu_createnewprofileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_createnewprofileActionPerformed
         new new_profile_window(this,true,profile_engine);
+        load_window();
     }//GEN-LAST:event_menu_createnewprofileActionPerformed
+
+    private void button_setprofileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_setprofileActionPerformed
+        try{
+            int object_id = Integer.parseInt(list_profiles.getSelectedValue().toString().split(":")[0]);
+            if ( object_id == 0 ){
+                Profile profile = new Profile();
+                profile_engine.selected_profile = profile;
+                new message_window(this,true,"Empty profile set","");
+            }
+            else{
+                profile_engine.selected_profile = profile_engine.list_profiles.get(object_id-1);
+                new message_window(this,true,"Profile "+profile_engine.selected_profile.profile_name+" set.","");
+            }
+            dispose();
+            new main_window(profile_engine);
+        }catch(Exception e){
+            new message_window(this,true,"Error\n"+e.toString(),"");
+        }
+    }//GEN-LAST:event_button_setprofileActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton button_setprofile;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JList<String> list_profiles;
