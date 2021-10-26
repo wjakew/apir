@@ -113,4 +113,16 @@ public class Profile {
         
         System.out.println(data);
     }
+    
+    /**
+     * Function for loading components to collection
+     * @return ArrayList
+     */
+    public ArrayList<String> load_components(){
+        ArrayList<String> data = new ArrayList<>();
+        data.add(profile_url);
+        data.add(profile_health_connection_url);
+        data.addAll(profile_special_data);
+        return data;
+    }
 }
