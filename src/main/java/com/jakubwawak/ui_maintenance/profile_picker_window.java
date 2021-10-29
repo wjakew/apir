@@ -82,6 +82,7 @@ public class profile_picker_window extends javax.swing.JDialog {
         jMenuBar1 = new javax.swing.JMenuBar();
         menu_profiles = new javax.swing.JMenu();
         menu_createnewprofile = new javax.swing.JMenuItem();
+        menu_removeprofile = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Profile picker");
@@ -109,6 +110,14 @@ public class profile_picker_window extends javax.swing.JDialog {
             }
         });
         menu_profiles.add(menu_createnewprofile);
+
+        menu_removeprofile.setText("Remove profile");
+        menu_removeprofile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menu_removeprofileActionPerformed(evt);
+            }
+        });
+        menu_profiles.add(menu_removeprofile);
 
         jMenuBar1.add(menu_profiles);
 
@@ -162,6 +171,24 @@ public class profile_picker_window extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_button_setprofileActionPerformed
 
+    private void menu_removeprofileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_removeprofileActionPerformed
+       try{
+            int object_id = Integer.parseInt(list_profiles.getSelectedValue().toString().split(":")[0]);
+            if ( object_id == 0 ){
+                new message_window(this,true,"No profile to remove","");
+            }
+            else{
+                profile_engine.remove_profile(object_id-1);
+                new message_window(this,true,"Profile "+profile_engine.selected_profile.profile_name+" set.","");
+                load_window();
+            }
+            dispose();
+            new main_window(profile_engine);
+        }catch(Exception e){
+            new message_window(this,true,"Error\n"+e.toString(),"");
+        }
+    }//GEN-LAST:event_menu_removeprofileActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton button_setprofile;
@@ -170,5 +197,6 @@ public class profile_picker_window extends javax.swing.JDialog {
     private javax.swing.JList<String> list_profiles;
     private javax.swing.JMenuItem menu_createnewprofile;
     private javax.swing.JMenu menu_profiles;
+    private javax.swing.JMenuItem menu_removeprofile;
     // End of variables declaration//GEN-END:variables
 }

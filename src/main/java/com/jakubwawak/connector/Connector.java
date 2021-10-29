@@ -34,7 +34,12 @@ public class Connector {
      * Constructor
      * @param oauth 
      */
-    public Connector(String server_ip){
+    public Connector(String server_ip,JDialog object){
+        this.server_ip = server_ip;
+        ldt = new Date();
+        error = false;
+    }
+    public Connector(String server_ip,JFrame object){
         this.server_ip = server_ip;
         ldt = new Date();
         error = false;
@@ -57,7 +62,7 @@ public class Connector {
      * @throws UnirestException 
      */
     public JsonElement commit(String url,JFrame object) throws UnirestException{
-        HttpResponse<JsonNode> response = response_creator(url);
+        HttpResponse<JsonNode> response = response_creator(url,object);
         System.out.println("Trying to commit url:"+url);
         Parser parser = new Parser(parse_response(response));
         try{
@@ -91,7 +96,7 @@ public class Connector {
      * @throws UnirestException 
      */
     public JsonElement commit(String url,JDialog object) throws UnirestException{
-        HttpResponse<JsonNode> response = response_creator(url);
+        HttpResponse<JsonNode> response = response_creator(url,object);
         System.out.println("Trying to commit url:"+url);
         Parser parser = new Parser(parse_response(response));
         try{
@@ -113,11 +118,22 @@ public class Connector {
      * @return String
      * @throws UnirestException 
      */
-    HttpResponse<JsonNode> response_creator(String url) throws UnirestException{
+    HttpResponse<JsonNode> response_creator(String url,JFrame object) throws UnirestException{
         try{
             System.out.println("Creating response ("+url_builder(url)+")");
             return Unirest.get(url_builder(url)).asJson();
         }catch(UnirestException e){
+            new message_window(object,true,"Failed to create response\n"+e.toString(),"");
+            System.out.println("Failed to create response ("+e.toString());
+            return null;
+        }
+    } 
+    HttpResponse<JsonNode> response_creator(String url,JDialog object) throws UnirestException{
+        try{
+            System.out.println("Creating response ("+url_builder(url)+")");
+            return Unirest.get(url_builder(url)).asJson();
+        }catch(UnirestException e){
+            new message_window(object,true,"Failed to create response\n"+e.toString(),"");
             System.out.println("Failed to create response ("+e.toString());
             return null;
         }

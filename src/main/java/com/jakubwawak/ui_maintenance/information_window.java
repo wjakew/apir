@@ -1,12 +1,12 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+Jakub Wawak
+kubawawak@gmail.com
+all rights reseved
  */
 package com.jakubwawak.ui_maintenance;
 
 /**
- *
+ *Window for creating information data
  * @author Jakub Wawak
  */
 public class information_window extends javax.swing.JDialog {
@@ -37,6 +37,7 @@ public class information_window extends javax.swing.JDialog {
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Apir Information");
 
         jLabel1.setText("kubawawak@gmail.com");
 

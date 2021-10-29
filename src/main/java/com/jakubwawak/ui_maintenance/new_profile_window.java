@@ -38,6 +38,17 @@ public class new_profile_window extends javax.swing.JDialog {
         setVisible(true);
     }
     
+    public new_profile_window(java.awt.Frame parent, boolean modal,Profile_Engine profile_engine,Profile to_add) {
+        super(parent, modal);
+        this.profile_engine = profile_engine;
+        initComponents();
+        this.setLocationRelativeTo(null);
+        
+        field_url.setText(to_add.profile_url);
+       
+        setVisible(true);
+    }
+    
     
     /**
      * Function for getting table data

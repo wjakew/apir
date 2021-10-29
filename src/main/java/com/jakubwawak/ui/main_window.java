@@ -5,6 +5,7 @@ all rights reseved
  */
 package com.jakubwawak.ui;
 
+import com.google.gson.JsonElement;
 import com.jakubwawak.connector.Connector;
 import com.jakubwawak.connector.Parser;
 import com.jakubwawak.ui_maintenance.information_window;
@@ -22,6 +23,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JTextField;
+import utils.Profile;
 import utils.Profile_Engine;
 
 /**
@@ -121,6 +123,19 @@ public class main_window extends javax.swing.JFrame {
             new message_window(this,true,"Failed to add to clipboard\n"+e.toString(),"Clipboard error");
         }
     }
+    
+    /**
+     * Function for parsing responses
+     * @param response
+     * @return String 
+     */
+    String parse_response(String response){
+        String parsed = "";
+        for(String line : response.split(",")){
+            parsed = parsed + line + "\n";
+        }
+        return parsed;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -154,7 +169,7 @@ public class main_window extends javax.swing.JFrame {
         menu_information = new javax.swing.JMenuItem();
         menu_profiles = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        menu_profilewindowcontent = new javax.swing.JMenuItem();
         menu_profilecreator = new javax.swing.JMenuItem();
         menu_changeprofile = new javax.swing.JMenuItem();
         menu_history = new javax.swing.JMenu();
@@ -212,6 +227,11 @@ public class main_window extends javax.swing.JFrame {
         });
 
         combobox_history.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        combobox_history.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                combobox_historyActionPerformed(evt);
+            }
+        });
 
         jLabel5.setText("History");
 
@@ -261,8 +281,13 @@ public class main_window extends javax.swing.JFrame {
 
         jMenu3.setText("Create new profile");
 
-        jMenuItem1.setText("From window content");
-        jMenu3.add(jMenuItem1);
+        menu_profilewindowcontent.setText("From window content");
+        menu_profilewindowcontent.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menu_profilewindowcontentActionPerformed(evt);
+            }
+        });
+        jMenu3.add(menu_profilewindowcontent);
 
         menu_profilecreator.setText("From creator");
         menu_profilecreator.addActionListener(new java.awt.event.ActionListener() {
@@ -397,12 +422,13 @@ public class main_window extends javax.swing.JFrame {
 
     private void button_createrequestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_createrequestActionPerformed
         add_history();
-        Connector connector = new Connector(profile_engine.selected_profile.profile_url);
+        Connector connector = new Connector(profile_engine.selected_profile.profile_url,this);
         try {
-            Parser parser = new Parser(connector.commit(field_url.getText(), this));
-            field_response.setText(parser.get_raw());
+            JsonElement response = connector.commit(field_request.getText(), this);
+            field_response.setText(parse_response(response.toString()));
         } catch (Exception ex) {
             new message_window(this,true,"Error\n"+ex.toString(),"ERROR");
+            field_response.setText("");
         }
     }//GEN-LAST:event_button_createrequestActionPerformed
 
@@ -423,7 +449,7 @@ public class main_window extends javax.swing.JFrame {
     }//GEN-LAST:event_field_requestMouseClicked
 
     private void button_checkconnectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_checkconnectionActionPerformed
-        Connector connector = new Connector(profile_engine.selected_profile.profile_url);
+        Connector connector = new Connector(profile_engine.selected_profile.profile_url,this);
         try{
             Parser parser = new Parser(connector.commit(profile_engine.selected_profile.profile_health_connection_url, this));
             new message_window(this,true,parser.get_raw(),"Health response");
@@ -467,6 +493,23 @@ public class main_window extends javax.swing.JFrame {
         new information_window(this,true);
     }//GEN-LAST:event_menu_informationActionPerformed
 
+    private void combobox_historyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combobox_historyActionPerformed
+        try{
+            String selected_text = combobox_history.getSelectedItem().toString();
+            field_request.setText(selected_text);
+        }catch(Exception e){
+            new message_window(this,true,"Error\n"+e.toString(),"");
+        }
+    }//GEN-LAST:event_combobox_historyActionPerformed
+
+    private void menu_profilewindowcontentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_profilewindowcontentActionPerformed
+        Profile profile = new Profile();
+        profile.profile_url = field_url.getText();
+        new new_profile_window(this,true,profile_engine,profile);
+        profile_engine.selected_profile = profile_engine.get_last();
+        load_window();
+    }//GEN-LAST:event_menu_profilewindowcontentActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton button_checkconnection;
@@ -486,7 +529,6 @@ public class main_window extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JList<String> list_content;
@@ -497,5 +539,6 @@ public class main_window extends javax.swing.JFrame {
     private javax.swing.JMenuItem menu_information;
     private javax.swing.JMenuItem menu_profilecreator;
     private javax.swing.JMenu menu_profiles;
+    private javax.swing.JMenuItem menu_profilewindowcontent;
     // End of variables declaration//GEN-END:variables
 }

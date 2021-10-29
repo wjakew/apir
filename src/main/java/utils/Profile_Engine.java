@@ -98,4 +98,27 @@ public class Profile_Engine {
         list_profiles.add(to_add);
         dump_data_to_file();
     }
+    
+    /**
+     * Function for getting last profile object
+     * @return Profile
+     */
+    public Profile get_last(){
+        return list_profiles.get(list_profiles.size()-1);
+    }
+    
+    /**
+     * Function for removing profiles from object
+     * @param to_remove
+     * @throws IOException 
+     */
+    public void remove_profile(Profile to_remove) throws IOException{
+        list_profiles.remove(to_remove);
+        dump_data_to_file();
+    }
+    
+    public void remove_profile(int profile_index) throws IOException{
+        list_profiles.remove(list_profiles.get(profile_index));
+        dump_data_to_file();
+    }
 }
