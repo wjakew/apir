@@ -46,7 +46,8 @@ public class Connector {
      * @return String
      */
     public String url_builder(String url){
-        return "http://"+server_ip+":8080"+url;
+        //return "http://"+server_ip+":8080"+url;
+        return url;
     }
     
     /**
@@ -69,6 +70,8 @@ public class Connector {
         }
         return parse_response(response);
     }
+    
+
     
     /**
      * Function for parasing response for data

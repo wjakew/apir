@@ -6,6 +6,7 @@ all rights reseved
 package com.jakubwawak.ui_maintenance;
 import com.jakubwawak.ui.main_window;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import utils.Profile;
 import utils.Profile_Engine;
 
@@ -34,7 +35,20 @@ public class profile_picker_window extends javax.swing.JDialog {
      * Function for load window components
      */
     void load_window(){
+        load_window_icon();
         load_list();
+    }
+    
+    /**
+     * Function for loading window icon
+     */
+    void load_window_icon(){
+        try{
+            ImageIcon img = new ImageIcon("apir_icon.png");
+            this.setIconImage(img.getImage());
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
     
     /**

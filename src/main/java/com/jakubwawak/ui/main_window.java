@@ -5,9 +5,22 @@ all rights reseved
  */
 package com.jakubwawak.ui;
 
+import com.jakubwawak.connector.Connector;
+import com.jakubwawak.connector.Parser;
+import com.jakubwawak.ui_maintenance.information_window;
+import com.jakubwawak.ui_maintenance.message_window;
+import com.jakubwawak.ui_maintenance.new_profile_window;
+import com.jakubwawak.ui_maintenance.profile_picker_window;
+import com.mashape.unirest.http.exceptions.UnirestException;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JTextField;
 import utils.Profile_Engine;
 
@@ -38,10 +51,22 @@ public class main_window extends javax.swing.JFrame {
      * Function for loading window data
      */
     void load_window(){
+        load_window_icon();
         load_profile();
         load_history();
+        field_response.setEditable(false);
     }
-    
+    /**
+     * Function for loading window icon
+     */
+    void load_window_icon(){
+        try{
+            ImageIcon img = new ImageIcon("apir_icon.png");
+            this.setIconImage(img.getImage());
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
     /**
      * Function for loading profile data
      */
@@ -81,6 +106,21 @@ public class main_window extends javax.swing.JFrame {
         dcm.addAll(history);
         combobox_history.setModel(dcm);
     }
+    
+    /**
+     * Function for adding data to clipboard
+     * @param data 
+     */
+    void add_to_clipboard(String data){
+        try{
+            StringSelection selection = new StringSelection(data);
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(selection, selection);
+            new message_window(this,true,"Added data to clipboard","");
+        }catch(Exception e){
+            new message_window(this,true,"Failed to add to clipboard\n"+e.toString(),"Clipboard error");
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -110,13 +150,15 @@ public class main_window extends javax.swing.JFrame {
         button_new = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
+        menu_apir = new javax.swing.JMenu();
+        menu_information = new javax.swing.JMenuItem();
+        menu_profiles = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenu4 = new javax.swing.JMenu();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        menu_profilecreator = new javax.swing.JMenuItem();
+        menu_changeprofile = new javax.swing.JMenuItem();
+        menu_history = new javax.swing.JMenu();
+        menu_clearhistory = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -156,14 +198,29 @@ public class main_window extends javax.swing.JFrame {
         });
 
         button_paste.setText("Copy");
+        button_paste.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button_pasteActionPerformed(evt);
+            }
+        });
 
         button_copyresponse.setText("Copy response");
+        button_copyresponse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button_copyresponseActionPerformed(evt);
+            }
+        });
 
         combobox_history.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel5.setText("History");
 
         button_checkconnection.setText("Check connection");
+        button_checkconnection.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button_checkconnectionActionPerformed(evt);
+            }
+        });
 
         button_urlset.setText("ULR Set");
         button_urlset.addActionListener(new java.awt.event.ActionListener() {
@@ -188,29 +245,56 @@ public class main_window extends javax.swing.JFrame {
 
         jLabel3.setText("Saved content");
 
-        jMenu1.setText("Apir");
-        jMenuBar1.add(jMenu1);
+        menu_apir.setText("Apir");
 
-        jMenu2.setText("Profiles");
+        menu_information.setText("Information");
+        menu_information.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menu_informationActionPerformed(evt);
+            }
+        });
+        menu_apir.add(menu_information);
+
+        jMenuBar1.add(menu_apir);
+
+        menu_profiles.setText("Profiles");
 
         jMenu3.setText("Create new profile");
 
         jMenuItem1.setText("From window content");
         jMenu3.add(jMenuItem1);
 
-        jMenuItem2.setText("From creator");
-        jMenu3.add(jMenuItem2);
+        menu_profilecreator.setText("From creator");
+        menu_profilecreator.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menu_profilecreatorActionPerformed(evt);
+            }
+        });
+        jMenu3.add(menu_profilecreator);
 
-        jMenu2.add(jMenu3);
+        menu_profiles.add(jMenu3);
 
-        jMenuBar1.add(jMenu2);
+        menu_changeprofile.setText("Change profile");
+        menu_changeprofile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menu_changeprofileActionPerformed(evt);
+            }
+        });
+        menu_profiles.add(menu_changeprofile);
 
-        jMenu4.setText("History");
+        jMenuBar1.add(menu_profiles);
 
-        jMenuItem3.setText("Clear history");
-        jMenu4.add(jMenuItem3);
+        menu_history.setText("History");
 
-        jMenuBar1.add(jMenu4);
+        menu_clearhistory.setText("Clear history");
+        menu_clearhistory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menu_clearhistoryActionPerformed(evt);
+            }
+        });
+        menu_history.add(menu_clearhistory);
+
+        jMenuBar1.add(menu_history);
 
         setJMenuBar(jMenuBar1);
 
@@ -313,6 +397,13 @@ public class main_window extends javax.swing.JFrame {
 
     private void button_createrequestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_createrequestActionPerformed
         add_history();
+        Connector connector = new Connector(profile_engine.selected_profile.profile_url);
+        try {
+            Parser parser = new Parser(connector.commit(field_url.getText(), this));
+            field_response.setText(parser.get_raw());
+        } catch (Exception ex) {
+            new message_window(this,true,"Error\n"+ex.toString(),"ERROR");
+        }
     }//GEN-LAST:event_button_createrequestActionPerformed
 
     private void button_newActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_newActionPerformed
@@ -331,6 +422,51 @@ public class main_window extends javax.swing.JFrame {
         selected_text = field_request.getText();
     }//GEN-LAST:event_field_requestMouseClicked
 
+    private void button_checkconnectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_checkconnectionActionPerformed
+        Connector connector = new Connector(profile_engine.selected_profile.profile_url);
+        try{
+            Parser parser = new Parser(connector.commit(profile_engine.selected_profile.profile_health_connection_url, this));
+            new message_window(this,true,parser.get_raw(),"Health response");
+        } catch (Exception ex) {
+            new message_window(this,true,"Error\n"+ex.toString(),"");
+        }
+    }//GEN-LAST:event_button_checkconnectionActionPerformed
+
+    private void button_pasteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_pasteActionPerformed
+        try{
+            String data = list_content.getSelectedValue();
+            add_to_clipboard(data);
+        }catch(Exception e){
+            new message_window(this,true,"Error\n"+e.toString(),"");
+        }
+    }//GEN-LAST:event_button_pasteActionPerformed
+
+    private void button_copyresponseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_copyresponseActionPerformed
+        try{
+            String data = field_response.getText();
+            add_to_clipboard(data);
+        }catch(Exception e){
+            new message_window(this,true,"Error\n"+e.toString(),"");
+        }
+    }//GEN-LAST:event_button_copyresponseActionPerformed
+
+    private void menu_clearhistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_clearhistoryActionPerformed
+        load_history();
+    }//GEN-LAST:event_menu_clearhistoryActionPerformed
+
+    private void menu_profilecreatorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_profilecreatorActionPerformed
+        new new_profile_window(this,true,profile_engine);
+    }//GEN-LAST:event_menu_profilecreatorActionPerformed
+
+    private void menu_changeprofileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_changeprofileActionPerformed
+        dispose();
+        new profile_picker_window(null,true,profile_engine);
+    }//GEN-LAST:event_menu_changeprofileActionPerformed
+
+    private void menu_informationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_informationActionPerformed
+        new information_window(this,true);
+    }//GEN-LAST:event_menu_informationActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton button_checkconnection;
@@ -348,16 +484,18 @@ public class main_window extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JList<String> list_content;
+    private javax.swing.JMenu menu_apir;
+    private javax.swing.JMenuItem menu_changeprofile;
+    private javax.swing.JMenuItem menu_clearhistory;
+    private javax.swing.JMenu menu_history;
+    private javax.swing.JMenuItem menu_information;
+    private javax.swing.JMenuItem menu_profilecreator;
+    private javax.swing.JMenu menu_profiles;
     // End of variables declaration//GEN-END:variables
 }

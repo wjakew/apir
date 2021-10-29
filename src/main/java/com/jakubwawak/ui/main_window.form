@@ -4,12 +4,22 @@
   <NonVisualComponents>
     <Menu class="javax.swing.JMenuBar" name="jMenuBar1">
       <SubComponents>
-        <Menu class="javax.swing.JMenu" name="jMenu1">
+        <Menu class="javax.swing.JMenu" name="menu_apir">
           <Properties>
             <Property name="text" type="java.lang.String" value="Apir"/>
           </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="menu_information">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Information"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menu_informationActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenu2">
+        <Menu class="javax.swing.JMenu" name="menu_profiles">
           <Properties>
             <Property name="text" type="java.lang.String" value="Profiles"/>
           </Properties>
@@ -24,24 +34,38 @@
                     <Property name="text" type="java.lang.String" value="From window content"/>
                   </Properties>
                 </MenuItem>
-                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
+                <MenuItem class="javax.swing.JMenuItem" name="menu_profilecreator">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="From creator"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menu_profilecreatorActionPerformed"/>
+                  </Events>
                 </MenuItem>
               </SubComponents>
             </Menu>
+            <MenuItem class="javax.swing.JMenuItem" name="menu_changeprofile">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Change profile"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menu_changeprofileActionPerformed"/>
+              </Events>
+            </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenu4">
+        <Menu class="javax.swing.JMenu" name="menu_history">
           <Properties>
             <Property name="text" type="java.lang.String" value="History"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem3">
+            <MenuItem class="javax.swing.JMenuItem" name="menu_clearhistory">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Clear history"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menu_clearhistoryActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -254,11 +278,17 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Copy"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="button_pasteActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="button_copyresponse">
       <Properties>
         <Property name="text" type="java.lang.String" value="Copy response"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="button_copyresponseActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JComboBox" name="combobox_history">
       <Properties>
@@ -284,6 +314,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Check connection"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="button_checkconnectionActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="button_urlset">
       <Properties>

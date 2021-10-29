@@ -82,6 +82,14 @@ public class Parser {
     }
     
     /**
+     * Function for getting raw object data
+     * @return String 
+     */
+    public String get_raw(){
+        return raw_object.toString();
+    }
+    
+    /**
      * Function for loading data from Json object
      */
     void load(){
