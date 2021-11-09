@@ -14,6 +14,7 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -29,6 +30,7 @@ public class Connector {
     public Date ldt;
     public boolean error;
     public String version,bulid;
+    public ArrayList<String> response_history;
     String server_ip;
     /**
      * Constructor
@@ -37,11 +39,13 @@ public class Connector {
     public Connector(String server_ip,JDialog object){
         this.server_ip = server_ip;
         ldt = new Date();
+        response_history = new ArrayList<>();
         error = false;
     }
     public Connector(String server_ip,JFrame object){
         this.server_ip = server_ip;
         ldt = new Date();
+        response_history = new ArrayList<>();
         error = false;
     }
     
@@ -73,6 +77,7 @@ public class Connector {
         }catch(Exception e){
             System.out.println("CONNECTOR ERROR: "+e.toString());
         }
+        response_history.add(new Parser(parse_response(response)).raw_data);
         return parse_response(response);
     }
     

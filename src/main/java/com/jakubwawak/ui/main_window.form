@@ -64,10 +64,18 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="menu_clearhistory">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Clear history"/>
+                <Property name="text" type="java.lang.String" value="Clear request history"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menu_clearhistoryActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="menu_responsehistory">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Show response history"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menu_responsehistoryActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>

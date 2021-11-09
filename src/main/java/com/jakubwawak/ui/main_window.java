@@ -12,19 +12,17 @@ import com.jakubwawak.ui_maintenance.information_window;
 import com.jakubwawak.ui_maintenance.message_window;
 import com.jakubwawak.ui_maintenance.new_profile_window;
 import com.jakubwawak.ui_maintenance.profile_picker_window;
-import com.mashape.unirest.http.exceptions.UnirestException;
+import com.jakubwawak.ui_maintenance.response_history_window;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
-import javax.swing.JTextField;
 import utils.Profile;
 import utils.Profile_Engine;
+import utils.Request_History_Object;
 
 /**
  *Object for creating main window
@@ -39,11 +37,13 @@ public class main_window extends javax.swing.JFrame {
     ArrayList<String> content;
     ArrayList<String> history;
     String selected_text;
+    ArrayList<Request_History_Object> response_history;
     public main_window(Profile_Engine profile_engine) {
         initComponents();
         this.profile_engine = profile_engine;
         history = new ArrayList<>();
         selected_text = "";
+        response_history = new ArrayList<>();
         this.setLocationRelativeTo(null);
         load_window();
         setVisible(true);
@@ -174,6 +174,7 @@ public class main_window extends javax.swing.JFrame {
         menu_changeprofile = new javax.swing.JMenuItem();
         menu_history = new javax.swing.JMenu();
         menu_clearhistory = new javax.swing.JMenuItem();
+        menu_responsehistory = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -311,13 +312,21 @@ public class main_window extends javax.swing.JFrame {
 
         menu_history.setText("History");
 
-        menu_clearhistory.setText("Clear history");
+        menu_clearhistory.setText("Clear request history");
         menu_clearhistory.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menu_clearhistoryActionPerformed(evt);
             }
         });
         menu_history.add(menu_clearhistory);
+
+        menu_responsehistory.setText("Show response history");
+        menu_responsehistory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menu_responsehistoryActionPerformed(evt);
+            }
+        });
+        menu_history.add(menu_responsehistory);
 
         jMenuBar1.add(menu_history);
 
@@ -426,6 +435,8 @@ public class main_window extends javax.swing.JFrame {
         try {
             JsonElement response = connector.commit(field_request.getText(), this);
             field_response.setText(parse_response(response.toString()));
+            response_history.add(new Request_History_Object(field_request.getText(),parse_response(response.toString())));
+            combobox_history.setSelectedItem(field_request.getText());
         } catch (Exception ex) {
             new message_window(this,true,"Error\n"+ex.toString(),"ERROR");
             field_response.setText("");
@@ -510,6 +521,10 @@ public class main_window extends javax.swing.JFrame {
         load_window();
     }//GEN-LAST:event_menu_profilewindowcontentActionPerformed
 
+    private void menu_responsehistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_responsehistoryActionPerformed
+        new response_history_window(this,true,response_history);
+    }//GEN-LAST:event_menu_responsehistoryActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton button_checkconnection;
@@ -540,5 +555,6 @@ public class main_window extends javax.swing.JFrame {
     private javax.swing.JMenuItem menu_profilecreator;
     private javax.swing.JMenu menu_profiles;
     private javax.swing.JMenuItem menu_profilewindowcontent;
+    private javax.swing.JMenuItem menu_responsehistory;
     // End of variables declaration//GEN-END:variables
 }
