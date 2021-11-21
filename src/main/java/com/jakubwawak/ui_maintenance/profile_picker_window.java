@@ -21,9 +21,10 @@ public class profile_picker_window extends javax.swing.JDialog {
      */
     
     Profile_Engine profile_engine;
-    
-    public profile_picker_window(java.awt.Frame parent, boolean modal,Profile_Engine profiles) {
+    String build_number;
+    public profile_picker_window(java.awt.Frame parent, boolean modal,Profile_Engine profiles,String build_number) {
         super(parent, modal);
+        this.build_number = build_number;
         this.profile_engine = profiles;
         initComponents();
         this.setLocationRelativeTo(null);
@@ -165,8 +166,11 @@ public class profile_picker_window extends javax.swing.JDialog {
                 new message_window(this,true,"Profile "+profile_engine.selected_profile.profile_name+" set.","");
             }
             dispose();
-            new main_window(profile_engine);
-        }catch(Exception e){
+            new main_window(profile_engine,build_number);
+        }catch(NullPointerException e){
+            new message_window(this,true,"No profile selected.","");
+        }
+        catch(Exception e){
             new message_window(this,true,"Error\n"+e.toString(),"");
         }
     }//GEN-LAST:event_button_setprofileActionPerformed
@@ -183,7 +187,7 @@ public class profile_picker_window extends javax.swing.JDialog {
                 load_window();
             }
             dispose();
-            new main_window(profile_engine);
+            new main_window(profile_engine,build_number);
         }catch(Exception e){
             new message_window(this,true,"Error\n"+e.toString(),"");
         }

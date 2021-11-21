@@ -38,8 +38,10 @@ public class main_window extends javax.swing.JFrame {
     ArrayList<String> history;
     String selected_text;
     ArrayList<Request_History_Object> response_history;
-    public main_window(Profile_Engine profile_engine) {
+    String build_number;
+    public main_window(Profile_Engine profile_engine,String build_number) {
         initComponents();
+        this.build_number = build_number;
         this.profile_engine = profile_engine;
         history = new ArrayList<>();
         selected_text = "";
@@ -54,6 +56,8 @@ public class main_window extends javax.swing.JFrame {
      */
     void load_window(){
         load_window_icon();
+        menu_build_number.setText(build_number);
+        menu_build_number.setEnabled(false);
         load_profile();
         load_history();
         field_response.setEditable(false);
@@ -175,8 +179,10 @@ public class main_window extends javax.swing.JFrame {
         menu_history = new javax.swing.JMenu();
         menu_clearhistory = new javax.swing.JMenuItem();
         menu_responsehistory = new javax.swing.JMenuItem();
+        menu_build_number = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Apir");
 
         jLabel1.setText("API URL");
 
@@ -329,6 +335,9 @@ public class main_window extends javax.swing.JFrame {
         menu_history.add(menu_responsehistory);
 
         jMenuBar1.add(menu_history);
+
+        menu_build_number.setText("build_number");
+        jMenuBar1.add(menu_build_number);
 
         setJMenuBar(jMenuBar1);
 
@@ -497,7 +506,7 @@ public class main_window extends javax.swing.JFrame {
 
     private void menu_changeprofileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_changeprofileActionPerformed
         dispose();
-        new profile_picker_window(null,true,profile_engine);
+        new profile_picker_window(null,true,profile_engine,build_number);
     }//GEN-LAST:event_menu_changeprofileActionPerformed
 
     private void menu_informationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_informationActionPerformed
@@ -548,6 +557,7 @@ public class main_window extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JList<String> list_content;
     private javax.swing.JMenu menu_apir;
+    private javax.swing.JMenu menu_build_number;
     private javax.swing.JMenuItem menu_changeprofile;
     private javax.swing.JMenuItem menu_clearhistory;
     private javax.swing.JMenu menu_history;

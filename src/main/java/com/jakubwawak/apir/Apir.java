@@ -16,8 +16,8 @@ import utils.Profile_Engine;
  */
 public class Apir {
     
-    final static String version = "1.1.0";
-    final static String build_number = "APIR-091121REV1";
+    final static String version = "1.1.1";
+    final static String build_number = "APIR-211121REV1";
     final static int debug = 0;
     
     
@@ -38,7 +38,7 @@ public class Apir {
             Profile_Engine profile_engine = new Profile_Engine();
             profile_engine.load_from_file();
             profile_engine.parse();
-            new profile_picker_window(null,true,profile_engine);
+            new profile_picker_window(null,true,profile_engine,build_number);
         }
     }
     
