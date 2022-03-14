@@ -5,7 +5,7 @@ kubawawak@gmail.com
  */
 package com.jakubwawak.apir;
 
-import com.formdev.flatlaf.FlatLightLaf;
+import com.formdev.flatlaf.FlatDarkLaf;
 import com.jakubwawak.ui_maintenance.profile_picker_window;
 import java.io.IOException;
 import utils.Profile_Engine;
@@ -16,8 +16,8 @@ import utils.Profile_Engine;
  */
 public class Apir {
     
-    final static String version = "1.1.1";
-    final static String build_number = "APIR-211121REV1";
+    final static String version = "1.2.0";
+    final static String build_number = "APIR-120322REV1";
     final static int debug = 0;
     
     
@@ -26,7 +26,7 @@ public class Apir {
      * @param args 
      */
     public static void main(String[] args) throws IOException{
-        FlatLightLaf.setup();
+        FlatDarkLaf.setup();
         show_header();
         if ( debug == 1 ){
             System.out.println("Debug flag is 1. Starting debug");

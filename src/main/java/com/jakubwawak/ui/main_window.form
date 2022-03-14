@@ -9,9 +9,17 @@
             <Property name="text" type="java.lang.String" value="Apir"/>
           </Properties>
           <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="menu_notewindow">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Note window"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menu_notewindowActionPerformed"/>
+              </Events>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="menu_information">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Information"/>
+                <Property name="text" type="java.lang.String" value="About"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menu_informationActionPerformed"/>
@@ -80,6 +88,29 @@
             </MenuItem>
           </SubComponents>
         </Menu>
+        <Menu class="javax.swing.JMenu" name="menu_savedcontent">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Saved content"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="menu_savedc_new">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="New.."/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menu_savedc_newActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="menu_savedc_copy">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Copy"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menu_savedc_copyActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
         <Menu class="javax.swing.JMenu" name="menu_build_number">
           <Properties>
             <Property name="text" type="java.lang.String" value="build_number"/>
@@ -116,17 +147,16 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Component id="button_urlset" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="button_clear" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="136" max="32767" attributes="0"/>
+                      <Component id="button_clear" min="-2" pref="186" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="combobox_history" min="-2" pref="90" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="combobox_history" max="32767" attributes="0"/>
                       <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
                       <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="button_createrequest" alignment="0" max="32767" attributes="0"/>
                           <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
@@ -136,81 +166,55 @@
                               </Group>
                               <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="field_url" max="32767" attributes="0"/>
                                   <Component id="field_request" max="32767" attributes="0"/>
-                                  <Component id="button_createrequest" alignment="0" max="32767" attributes="0"/>
+                                  <Group type="102" attributes="0">
+                                      <Component id="field_url" min="-2" pref="286" max="-2" attributes="0"/>
+                                      <EmptySpace max="32767" attributes="0"/>
+                                      <Component id="checkbox_autofill" min="-2" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                           </Group>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jScrollPane2" max="32767" attributes="0"/>
-                          <Component id="button_copyresponse" alignment="0" max="32767" attributes="0"/>
-                          <Component id="button_checkconnection" alignment="0" pref="191" max="32767" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="button_paste" min="-2" pref="82" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="button_new" min="-2" pref="82" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="61" max="-2" attributes="0"/>
-                      <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
-                  </Group>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Component id="jScrollPane2" max="32767" attributes="0"/>
+                  <Component id="button_checkconnection" pref="191" max="32767" attributes="0"/>
               </Group>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="button_checkconnection" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="button_urlset" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="combobox_history" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="button_clear" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="field_url" alignment="3" min="-2" pref="37" max="-2" attributes="0"/>
-                      <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="button_paste" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="button_new" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
-              </Group>
-              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="field_url" alignment="3" min="-2" pref="37" max="-2" attributes="0"/>
+                          <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="checkbox_autofill" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="field_request" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="button_createrequest" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jScrollPane1" pref="281" max="32767" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="jScrollPane1" pref="280" max="32767" attributes="0"/>
                   </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="jScrollPane2" pref="306" max="32767" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="button_copyresponse" min="-2" max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="jScrollPane2" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -291,22 +295,6 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="button_clearActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="button_paste">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Copy"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="button_pasteActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="button_copyresponse">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Copy response"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="button_copyresponseActionPerformed"/>
-      </Events>
-    </Component>
     <Component class="javax.swing.JComboBox" name="combobox_history">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
@@ -338,14 +326,6 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="button_checkconnectionActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="button_urlset">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="ULR Set"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="button_urlsetActionPerformed"/>
-      </Events>
-    </Component>
     <Component class="javax.swing.JButton" name="button_createrequest">
       <Properties>
         <Property name="text" type="java.lang.String" value="Create request"/>
@@ -354,17 +334,9 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="button_createrequestActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="button_new">
+    <Component class="javax.swing.JCheckBox" name="checkbox_autofill">
       <Properties>
-        <Property name="text" type="java.lang.String" value="New"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="button_newActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel3">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Saved content"/>
+        <Property name="text" type="java.lang.String" value="Autofill"/>
       </Properties>
     </Component>
   </SubComponents>

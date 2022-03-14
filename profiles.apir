@@ -2,3 +2,5 @@ Test!http://test/test!http://test/health!xd#xd2#xd3
 Test2!http://test2/test2!http://test3/test3!ole#kole#null
 trackAPI!http://192.168.1.101:8080!http://192.168.1.101:8080/health!testtoken#null#null
 trackAPI - test!http://192.168.1.101:8080!http://192.168.1.101:8080/health!null#null#null
+Test3!http://test3!http://test3/health!jebac#putina#null
+Test4!http://test4!http://test4/health!test1#test2#test3
