@@ -16,8 +16,8 @@ import utils.Profile_Engine;
  */
 public class Apir {
     
-    final static String version = "1.2.0";
-    final static String build_number = "APIR-120322REV1";
+    final static String version = "1.3.0";
+    final static String build_number = "APIR-120124REV1";
     final static int debug = 0;
     
     

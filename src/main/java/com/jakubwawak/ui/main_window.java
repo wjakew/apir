@@ -8,9 +8,11 @@ package com.jakubwawak.ui;
 import com.google.gson.JsonElement;
 import com.jakubwawak.connector.Connector;
 import com.jakubwawak.connector.Parser;
+import com.jakubwawak.connector.PayloadConnector;
 import com.jakubwawak.ui_maintenance.information_window;
 import com.jakubwawak.ui_maintenance.message_window;
 import com.jakubwawak.ui_maintenance.new_profile_window;
+import com.jakubwawak.ui_maintenance.payload_window;
 import com.jakubwawak.ui_maintenance.profile_picker_window;
 import com.jakubwawak.ui_maintenance.response_history_window;
 import java.awt.Toolkit;
@@ -35,13 +37,16 @@ public class main_window extends javax.swing.JFrame {
      */
     Profile_Engine profile_engine;
     ArrayList<String> content;
+    ArrayList<String> payloads;
     ArrayList<String> history;
     String selected_text;
     ArrayList<Request_History_Object> response_history;
     String build_number;
+    String currentPayload;
     String note;
     public main_window(Profile_Engine profile_engine,String build_number) {
         initComponents();
+        this.currentPayload = "";
         this.build_number = build_number;
         this.profile_engine = profile_engine;
         history = new ArrayList<>();
@@ -167,6 +172,7 @@ public class main_window extends javax.swing.JFrame {
         button_checkconnection = new javax.swing.JButton();
         button_createrequest = new javax.swing.JButton();
         checkbox_autofill = new javax.swing.JCheckBox();
+        payload_button = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         menu_apir = new javax.swing.JMenu();
         menu_notewindow = new javax.swing.JMenuItem();
@@ -246,6 +252,13 @@ public class main_window extends javax.swing.JFrame {
         });
 
         checkbox_autofill.setText("Autofill");
+
+        payload_button.setText("Payload");
+        payload_button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                payload_buttonMouseClicked(evt);
+            }
+        });
 
         menu_apir.setText("Apir");
 
@@ -367,13 +380,17 @@ public class main_window extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel1)
                                     .addComponent(jLabel2))
-                                .addGap(35, 35, 35)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(field_request)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(field_url, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(checkbox_autofill)))))
+                                        .addGap(35, 35, 35)
+                                        .addComponent(field_url, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(field_request)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(checkbox_autofill)
+                                    .addComponent(payload_button))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane2)
@@ -399,7 +416,8 @@ public class main_window extends javax.swing.JFrame {
                         .addGap(13, 13, 13)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(field_request, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))
+                            .addComponent(jLabel2)
+                            .addComponent(payload_button))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(button_createrequest)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -418,21 +436,35 @@ public class main_window extends javax.swing.JFrame {
 
     private void button_createrequestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_createrequestActionPerformed
         if ( checkbox_autofill.isSelected()){
-            
             if ( !field_request.getText().contains(field_url.getText())){
                 field_request.setText(field_url.getText()+field_request.getText());
             }
-            
             add_history();
-            Connector connector = new Connector(profile_engine.selected_profile.profile_url,this);
-            try {
-                JsonElement response = connector.commit(field_request.getText(), this);
-                field_response.setText(parse_response(response.toString()));
-                response_history.add(new Request_History_Object(field_request.getText(),parse_response(response.toString())));
-                combobox_history.setSelectedItem(field_request.getText());
-            } catch (Exception ex) {
-                new message_window(this,true,"Error\n"+ex.toString(),"ERROR");
-                field_response.setText("");
+            if ( currentPayload.equals("")){
+                Connector connector = new Connector(profile_engine.selected_profile.profile_url,this);
+                try {
+                    JsonElement response = connector.commit(field_request.getText(), this);
+                    field_response.setText(parse_response(response.toString()));
+                    response_history.add(new Request_History_Object(field_request.getText(),parse_response(response.toString())));
+                    combobox_history.setSelectedItem(field_request.getText());
+                } catch (Exception ex) {
+                    new message_window(this,true,"Error\n"+ex.toString(),"ERROR");
+                    field_response.setText("");
+                }
+            }
+            else{
+                // current payload is set - send request with new payload
+                field_response.setText("URL:\n"+profile_engine.selected_profile.profile_url+"\nPayload:\n"+currentPayload);
+                PayloadConnector connector = new PayloadConnector(profile_engine.selected_profile.profile_url);
+                try{
+                    JsonElement response = connector.commit(currentPayload);
+                    field_response.setText(parse_response(response.toString()));
+                    response_history.add(new Request_History_Object(field_request.getText(),parse_response(response.toString())));
+                    combobox_history.setSelectedItem(field_request.getText());
+                } catch (Exception ex) {
+                    new message_window(this,true,"Error\n"+ex.toString(),"ERROR");
+                    field_response.setText("");
+                }
             }
         }
         else{
@@ -527,6 +559,10 @@ public class main_window extends javax.swing.JFrame {
         new note_window(this,note);
     }//GEN-LAST:event_menu_notewindowActionPerformed
 
+    private void payload_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_payload_buttonMouseClicked
+        new payload_window(this,true,currentPayload);
+    }//GEN-LAST:event_payload_buttonMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton button_checkconnection;
@@ -559,5 +595,6 @@ public class main_window extends javax.swing.JFrame {
     private javax.swing.JMenuItem menu_savedc_copy;
     private javax.swing.JMenuItem menu_savedc_new;
     private javax.swing.JMenu menu_savedcontent;
+    private javax.swing.JButton payload_button;
     // End of variables declaration//GEN-END:variables
 }
